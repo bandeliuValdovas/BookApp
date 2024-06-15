@@ -1,5 +1,6 @@
 package com.techin.bookRecommendationApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techin.bookRecommendationApp.Enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class User implements UserDetails {
     private UUID id;
 
     private String name;
+    @JsonIgnore
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
