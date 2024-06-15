@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Login from './Login';
 
 const LoginComponent2 = () => {
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
@@ -10,7 +10,7 @@ const LoginComponent2 = () => {
     e.preventDefault();
     try {
       console.log("errorr here?")
-      await Login(username, password);      
+      await Login(name, password);      
     } catch (err) {
       setError('Login failed. Please check your username and password.');
     }
@@ -22,12 +22,12 @@ const LoginComponent2 = () => {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="name">Username</label>
           <input
             type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             required
           />
         </div>

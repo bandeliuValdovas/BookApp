@@ -2,6 +2,7 @@ package com.techin.bookRecommendationApp.config;
 
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,6 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -27,21 +29,26 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
+
+    @Value("${app.client}")
+    private String client;
+    @Value("${app.scheme}")
+    private String httpScheme;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(
-                        req -> req.requestMatchers(HttpMethod.POST, "/h2-console/**", "/api/v1/auth/**")
-                                .permitAll()
+                .authorizeHttpRequests(req -> req
+                                .requestMatchers("/api/v1/auth/**").permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
 //                                .requestMatchers("/admin_only/**")
 //                                .hasAnyAuthority("ADMIN")
-                                .anyRequest()
-                                .authenticated()
+                                .anyRequest().authenticated()
                 )
-         //       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers   //to connect H2 database
@@ -61,14 +68,18 @@ public class SecurityConfig {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+
         CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of(httpScheme + "://" + client));
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5173/"));
         config.addAllowedOrigin("http://localhost:5173");
         config.setAllowedMethods(List.of("*"));
         config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", config);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 }
