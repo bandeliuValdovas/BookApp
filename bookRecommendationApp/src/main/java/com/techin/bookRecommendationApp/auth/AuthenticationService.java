@@ -22,6 +22,9 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     public RegisterResponse register(RegisterRequest request) {
+        if(repository.findByEmail(request.getEmail()).isPresent()){
+            throw new RuntimeException("user already exists");
+        }
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -43,7 +46,7 @@ public class AuthenticationService {
 
         );
         var user = repository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("user not found")); // need normal exception
+                .orElseThrow(() -> new UsernameNotFoundException("user not found"));
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)

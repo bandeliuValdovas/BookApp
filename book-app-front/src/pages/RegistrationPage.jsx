@@ -1,17 +1,19 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Login from "../authentication/Login";
+import Register from "../authentication/Register";
 
-function LoginPage() {
-  const [username, setUsername] = useState("");
+function RegistrationPage() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await Login(username, password);
+      await Register(firstName, lastName, email, password);
     } catch (error) {
       setError("Login failed. Please check username and password");
     }
@@ -19,20 +21,33 @@ function LoginPage() {
 
   return (
     <Form onSubmit={handleLogin}>
-      <Form.Text className="text-muted">
-        If you have no accoun please go to{" "}
-        <a href="/registration">registration</a> page.
-      </Form.Text>
+      <Form.Group className="mb-3" controlId="formBasicName">
+        <Form.Control
+          type="text"
+          placeholder="Enter your name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
+        />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicLastName">
+        <Form.Control
+          type="text"
+          placeholder="Enter your last name"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          required
+        />
+      </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Control
           type="email"
           placeholder="Enter email"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
       </Form.Group>
-
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Control
           type="password"
@@ -51,4 +66,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default RegistrationPage;
