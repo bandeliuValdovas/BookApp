@@ -8,7 +8,7 @@ const Test = () => {
     useEffect(() => {
 
     const getData = async() => {
-        axiosInstance.get("/api/v1/demo-controller/demo")
+        axiosInstance.get("/api/v1/demo/demo")
         .then((response2) => {
             console.log(response2);
             seData(response2.data);

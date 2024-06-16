@@ -1,6 +1,5 @@
-package com.techin.bookRecommendationApp.model;
+package com.techin.bookRecommendationApp.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techin.bookRecommendationApp.Enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,21 +14,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "users")
+@Builder
 public class User implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String name;
-    @JsonIgnore
+    private String firstName;
+    private String lastName;
+    private String email;
+
     private String password;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -39,36 +40,32 @@ public class User implements UserDetails {
     }
 
     @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
     public String getPassword() {
         return password;
     }
 
     @Override
-    public String getUsername() {
-        return name;
-    }
-
-    @Override
     public boolean isAccountNonExpired() {
-        //return UserDetails.super.isAccountNonExpired();
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        //return UserDetails.super.isAccountNonLocked();
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        //return UserDetails.super.isCredentialsNonExpired();
         return true;
     }
 
     @Override
     public boolean isEnabled() {
-        //return UserDetails.super.isEnabled();
         return true;
     }
 }
