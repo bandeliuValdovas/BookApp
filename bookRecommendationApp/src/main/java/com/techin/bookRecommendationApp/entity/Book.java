@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,6 +27,6 @@ public class Book {
     private int pagesCount;
 
     @ManyToMany(mappedBy = "books")
-    private Set<BookCategory> categories;
+    private Set<Category> categories;
 
 }

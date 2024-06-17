@@ -50,7 +50,8 @@ public class BookService {
         bookToUpdate.setAuthor(request.getAuthor());
         bookToUpdate.setDescription(request.getDescription());
         bookToUpdate.setPagesCount(request.getPagesCount());
-        return bookRepository.save(bookToUpdate);
+        bookRepository.save(bookToUpdate);
+        return bookToUpdate;
     }
 
     public Book getBookById(UUID id){
