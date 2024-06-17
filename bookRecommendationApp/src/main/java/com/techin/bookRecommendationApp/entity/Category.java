@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,6 +28,14 @@ public class Category {
             name = "categorised_books",
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn (name = "book_id"))
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<>();
+
+    public void addBook(Book book){
+        books.add(book);
+    }
+
+    public void removeBook(Book book){
+        books.remove(book);
+    }
 
 }

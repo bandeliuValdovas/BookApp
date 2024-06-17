@@ -26,7 +26,7 @@ public class Book {
     private String author;
     private int pagesCount;
 
-    @ManyToMany(mappedBy = "books")
-    private Set<Category> categories;
+//    @ManyToMany(mappedBy = "books")
+//    private Set<Category> categories;
 
 }

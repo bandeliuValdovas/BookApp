@@ -48,4 +48,18 @@ public class CategoryController {
         categoryService.deleteCategory(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping(path = "/category/{categoryId}/book/{bookId}")
+    public ResponseEntity<?> addBookToCategory (@PathVariable UUID categoryId,
+                                                     @PathVariable UUID bookId){
+        categoryService.addBookToCategory(categoryId, bookId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/category/{categoryId}/book/{bookId}")
+    public ResponseEntity<?> removeBookFromCategory (@PathVariable UUID categoryId,
+                                                @PathVariable UUID bookId){
+        categoryService.removeBookFromCategory(categoryId, bookId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

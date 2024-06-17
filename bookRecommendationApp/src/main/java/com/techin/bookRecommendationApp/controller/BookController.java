@@ -1,7 +1,9 @@
 package com.techin.bookRecommendationApp.controller;
 
 import com.techin.bookRecommendationApp.dto.request.BookRequest;
+import com.techin.bookRecommendationApp.dto.response.BookResponse;
 import com.techin.bookRecommendationApp.entity.Book;
+import com.techin.bookRecommendationApp.entity.Category;
 import com.techin.bookRecommendationApp.service.BookService;
 import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +21,9 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping(path = "/book/{id}")
-    public ResponseEntity<Book> getBook(@PathVariable @Nonnull UUID id) {
-        final Book book = bookService.getBookById(id);
-        return new ResponseEntity<>(book, HttpStatus.OK);
+    public ResponseEntity<BookResponse> getBook(@PathVariable @Nonnull UUID id) {
+        final BookResponse bookResponse= bookService.getBookById(id);
+        return new ResponseEntity<>(bookResponse, HttpStatus.OK);
     }
 
     @GetMapping(path = "/books")
@@ -47,5 +49,12 @@ public class BookController {
     public ResponseEntity<?> deleteBook(@PathVariable @Nonnull UUID id) {
         bookService.deleteBook(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //FOR TESTING
+    @GetMapping(path = "/bookcategories/{id}")
+    public ResponseEntity<List<Category>> getBooksCategories(@PathVariable @Nonnull UUID id) {
+        List<Category> list = bookService.getBooksCategories(id);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
