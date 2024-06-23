@@ -11,6 +11,8 @@ import com.techin.bookRecommendationApp.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -77,8 +79,13 @@ public class BookService {
         return bookResponse;
     }
 
-    public List<Book> getBooks (){
-        return bookRepository.findAll();
+    public Page<Book> getAllBooks (PageRequest pageRequest, String contains) {
+        if (contains == null){
+            return bookRepository.findAll(pageRequest);
+        } else{
+            return bookRepository.findByNameContainingIgnoreCase(pageRequest, contains);
+        }
+
     }
 
     public List<Category> getBooksCategories (UUID bookId){
