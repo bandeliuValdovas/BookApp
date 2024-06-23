@@ -8,6 +8,8 @@ import NavigationBar from "./components/NavigationBar";
 import RegistrationPage from "./pages/RegistrationPage";
 import Books from "./pages/Books";
 import BookDetails from "./pages/BookDetails";
+import RegisterBook from "./pages/RegisterBook";
+import EditBook from "./pages/EditBook";
 
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
         <Route path = "/registration" element = {<RegistrationPage/>}/>
         <Route path = "/books" element = {<Books/>}/>
         <Route path='/book/:id' element={<BookDetails />} />
+        <Route path = "/addbook" element = {<RegisterBook/>}/>
+        <Route path = "/editbook" element = {<EditBook/>}/>
 
 
         <Route path="/test" element={<Test />} />

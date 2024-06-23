@@ -23,10 +23,10 @@ function NavigationBar() {
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/books">Books</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+            <NavDropdown title="Add" id="basic-nav-dropdown">
+              <NavDropdown.Item href="/addbook">Add Book</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
-                Another action
+                Add Category
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
               <NavDropdown.Divider />

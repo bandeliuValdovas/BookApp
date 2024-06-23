@@ -8,6 +8,7 @@ import com.techin.bookRecommendationApp.entity.Category;
 import com.techin.bookRecommendationApp.exception.BookNotFoundException;
 import com.techin.bookRecommendationApp.repository.BookRepository;
 import com.techin.bookRecommendationApp.repository.CategoryRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class BookService {
 
     public Book createBook (BookRequest bookRequest){
         if(bookRepository.findByIsbn(bookRequest.getIsbn()).isPresent()){
-            throw new RuntimeException("book already exists");
+            throw new EntityExistsException("book with this ISBN already exists");
         }
         Book book = Book.builder()
                 .name(bookRequest.getName())
@@ -44,6 +45,8 @@ public class BookService {
 
     public void deleteBook (UUID id){
         if (bookRepository.existsById(id)) {
+            List<Category> list = getBooksCategories(id);
+            list.stream().forEach(cat -> cat.removeBook(bookRepository.getReferenceById(id)));
             bookRepository.deleteById(id);
             log.info("{}: Deleted book from the database with ID: {}", this.getClass().getName(), id);
         } else {
