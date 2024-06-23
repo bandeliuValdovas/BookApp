@@ -21,7 +21,6 @@ public class JwtService {
     @Value("${app.constants.security.jwt-secret-key}")
     private String SECRET_KEY;
 
-//    private static final String SECRET_KEY = "0fac5bb5324bcafd8dd0cea6b83257d8df8ef93b72608f37de02f01d0559aef6";
 
     public String extractUsername (String token){
         return extractClaim(token, Claims::getSubject);

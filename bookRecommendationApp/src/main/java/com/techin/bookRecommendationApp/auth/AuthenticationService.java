@@ -5,6 +5,7 @@ import com.techin.bookRecommendationApp.Enums.Role;
 import com.techin.bookRecommendationApp.config.JwtService;
 import com.techin.bookRecommendationApp.entity.User;
 import com.techin.bookRecommendationApp.repository.UserRepository;
+import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +24,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     public RegisterResponse register(RegisterRequest request) {
         if(repository.findByEmail(request.getEmail()).isPresent()){
-            throw new RuntimeException("user already exists");
+            throw new EntityExistsException("user already exists");
         }
         var user = User.builder()
                 .firstName(request.getFirstName())
@@ -40,13 +41,12 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("user not found"));
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getEmail(),
                 request.getPassword())
-
         );
-        var user = repository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("user not found"));
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)

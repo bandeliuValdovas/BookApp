@@ -3,6 +3,8 @@ package com.techin.bookRecommendationApp.service;
 import com.techin.bookRecommendationApp.dto.request.CategoryRequest;
 import com.techin.bookRecommendationApp.entity.Book;
 import com.techin.bookRecommendationApp.entity.Category;
+import com.techin.bookRecommendationApp.exception.BookNotFoundException;
+import com.techin.bookRecommendationApp.exception.CategoryNotFoundException;
 import com.techin.bookRecommendationApp.repository.BookRepository;
 import com.techin.bookRecommendationApp.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -60,18 +62,18 @@ public class CategoryService {
 
     public void addBookToCategory(UUID categoryId, UUID bookId) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+                .orElseThrow(() -> new BookNotFoundException("Book not found"));
         category.addBook(book);
         categoryRepository.save(category);
     }
 
     public void removeBookFromCategory(UUID categoryId, UUID bookId) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+                .orElseThrow(() -> new BookNotFoundException("Book not found"));
         category.removeBook(book);
         categoryRepository.save(category);
     }

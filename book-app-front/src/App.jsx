@@ -6,6 +6,8 @@ import Test from "./authentication/Test";
 import LoginPage from "./pages/LoginPage";
 import NavigationBar from "./components/NavigationBar";
 import RegistrationPage from "./pages/RegistrationPage";
+import Books from "./pages/Books";
+import BookDetails from "./pages/BookDetails";
 
 
 function App() {
@@ -16,6 +18,9 @@ function App() {
       <Routes>  
         <Route path = "/login" element = {<LoginPage/>}/>
         <Route path = "/registration" element = {<RegistrationPage/>}/>
+        <Route path = "/books" element = {<Books/>}/>
+        <Route path='/book/:id' element={<BookDetails />} />
+
 
         <Route path="/test" element={<Test />} />
         <Route path="/" element={<Home />} />

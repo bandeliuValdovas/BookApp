@@ -10,6 +10,7 @@ import com.techin.bookRecommendationApp.repository.CategoryRepository;
 import com.techin.bookRecommendationApp.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,14 +23,24 @@ public class DataGenerator {
     @PostConstruct
     public void generateData(){
         Faker faker = new Faker();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        User user = new User();
+        user.setFirstName("admin");
+        user.setLastName("admin");
+        user.setRole(Role.ADMIN);
+        user.setEmail("admin@gmail.com");
+        user.setPassword(passwordEncoder.encode("1234"));
+
+        userRepository.save(user);
 
         for (int i = 0; i < 10; i++){
-            User user = new User();
+            user = new User();
             user.setFirstName(faker.name().firstName());
             user.setLastName(faker.name().lastName());
             user.setRole(Role.USER);
-            user.setEmail(faker.internet().emailAddress("gmail"));
-            user.setPassword("1234");
+            user.setEmail(faker.internet().emailAddress(user.getFirstName()).toLowerCase());
+            user.setPassword(passwordEncoder.encode("1234"));
 
             userRepository.save(user);
         }

@@ -5,6 +5,7 @@ import com.techin.bookRecommendationApp.dto.response.BookResponse;
 import com.techin.bookRecommendationApp.dto.response.MappedCategory;
 import com.techin.bookRecommendationApp.entity.Book;
 import com.techin.bookRecommendationApp.entity.Category;
+import com.techin.bookRecommendationApp.exception.BookNotFoundException;
 import com.techin.bookRecommendationApp.repository.BookRepository;
 import com.techin.bookRecommendationApp.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -63,7 +64,7 @@ public class BookService {
 
     public BookResponse getBookById(UUID id){
         Book book =  bookRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("book not found"));
+                .orElseThrow(()-> new BookNotFoundException("book not found with id: " + id));
         log.debug("Fetched book {} from database", book.getId());
         Set<MappedCategory> set = getBooksCategories(id)
                 .stream()
